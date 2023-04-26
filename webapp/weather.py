@@ -1,13 +1,13 @@
 # напишем функцию, 
 # которая запрашивает прогноз на worldweatheronline.com 
 # и возвращает результат.
-
+from flask import current_app
 import requests
 
 def weather_by_city(city_name):
-    weather_url = "http://api.worldweatheronline.com/premium/v1/weather.ashx"
+    weather_url = current_app.config['WEATHER_URL']
     params = {
-        "key": "51854441bb614444b4e175611230901",
+        "key": current_app.config['WEATHER_API_KEY'],
         "q": city_name,
         "format": "json",
         "num_of_days": 1,
@@ -29,5 +29,5 @@ def weather_by_city(city_name):
 
 
 if __name__=="__main__":
-    w = weather_by_city("Moscow, Russia")
+    w = weather_by_city(current_app.config['WEATHER_DEFAULT_CITY'])
     print(w)
