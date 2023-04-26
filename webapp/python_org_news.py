@@ -51,11 +51,11 @@ def get_python_news():
             url = news.find('a')['href']
             published =news.find('time').text
             try:
-                published = datetime.strptime(published, '%Y-%m-%d')
+                published = datetime.strptime(published, '%B %d, %Y')
             except(ValueError):
                 published = datetime.now()
+            print(f"2.{published =}")
             save_news(title, url, published)
-       # print(f"{title = }")
 
 
 # сохранение в базу данных
