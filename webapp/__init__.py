@@ -1,6 +1,6 @@
 from webapp.python_org_news import get_python_news_without_database #можно убрать
 from flask import Flask, render_template, flash, redirect, url_for
-from flask_login import LoginManager, login_user, logout_user
+from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from webapp.weather import weather_by_city
 from webapp.models import db, News, User
 
@@ -41,6 +41,8 @@ def create_app():
 
     @app.route('/login')
     def login():
+        if current_user.is_authenticated:
+          return redirect(url_for('index'))
         title = "Авторизация"
         login_form = LoginForm()
         return render_template('login.html', page_title=title, form=login_form)
@@ -63,6 +65,15 @@ def create_app():
         logout_user()
         flash('Вы успешно разлогинились')
         return redirect(url_for('index'))
+
+
+    @app.route('/admin')
+    @login_required
+    def admin_index():
+      if current_user.is_admin:
+          return 'Привет админ'
+      else:
+          return 'Ты не админ!'
 
     return app
 
